@@ -10,9 +10,11 @@ class Table extends Component {
         this.state = {line: props.line,
         header: props.header,
         data: props.data,
-        isOpen: false};
+        isOpen: false,
+        newName: ""};
         this.changeCheckbox = this.changeCheckbox.bind(this);
         this.addPlayer = this.addPlayer.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     isFullDay(index) {
@@ -28,6 +30,9 @@ class Table extends Component {
         this.setState({
           isOpen: !this.state.isOpen
         });
+        if (this.state.isOpen) {
+            this.addPlayer();
+        }
       }
 
   render() {
@@ -72,10 +77,10 @@ class Table extends Component {
                 onClick={this.toggleModal}/></td>
             <td colSpan={this.state.data[0].length - 1} style={{border:"white"}}></td></tr>
       </table>
-      <Modal show={this.state.isOpen} callback={}
+      <Modal show={this.state.isOpen} callback={this.addPlayer}
                 onClose={this.toggleModal}>
                 <p>New player</p>
-                <input type="text" size="40"></input>
+                <input type="text" size="40" value={this.state.newName} onChange={this.handleChange}></input>
               </Modal>
       </div>
     );
@@ -88,8 +93,12 @@ class Table extends Component {
         this.render();
     }
 
+    handleChange(event) {
+        this.setState({newName: event.target.value});
+      }
+
     addPlayer() {
-//        var name =
+        var name = this.state.newName;
         var d = this.state.data;
         var newRow = [];
         newRow.push(name);
